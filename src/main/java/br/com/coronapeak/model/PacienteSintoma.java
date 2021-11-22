@@ -35,5 +35,5 @@ public class PacienteSintoma {
 
 	@ManyToOne
 	@JoinColumn(name = "id_sintoma",foreignKey = @ForeignKey(name = "fk_pacisint_sintoma"))
-	private Sintoma sintoma;
+	private Sintoma sintomas;
 }
