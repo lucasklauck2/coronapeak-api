@@ -1,5 +1,9 @@
 package br.com.coronapeak.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +17,35 @@ public class CidadeService {
 	@Autowired
 	private CidadeRepository cidadeRepository;
 	
-	public void cadastrarCidade(CidadeDTO cidadeDTO) {
+	ModelMapper modelMapper = new ModelMapper();
+	
+	public Cidade cadastrarCidade(CidadeDTO cidadeDTO) {
+			
+		return cidadeRepository.save(modelMapper.map(cidadeDTO, Cidade.class));
+	}
+	
+	public List<CidadeDTO> adquirir(){
 		
-		Cidade cidade = new Cidade();
-		cidade.setNome(cidadeDTO.getNome());
-		cidade.setEstado(cidadeDTO.getEstado());
-		cidade.setSigla(cidadeDTO.getSigla());
+		List<Cidade> listaCidade = cidadeRepository.findAll();
 		
-		cidadeRepository.save(cidade);
+		List<CidadeDTO> listaCidadeDTO = new ArrayList<>();
+		
+		listaCidade.forEach(cidade -> {
+			
+			CidadeDTO cidadeDTO = new CidadeDTO();
+			cidadeDTO.setId(cidade.getId());
+			cidadeDTO.setNome(cidade.getNome());
+			cidadeDTO.setEstado(cidade.getEstado());
+			cidadeDTO.setSigla(cidade.getSigla());
+			
+			listaCidadeDTO.add(cidadeDTO);
+		});
+		
+		return listaCidadeDTO;
 	}
 
+	public void deletar(Long codigoCidade) {
+		
+		cidadeRepository.deleteById(codigoCidade);
+	}
 }

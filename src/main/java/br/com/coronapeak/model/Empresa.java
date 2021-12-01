@@ -4,12 +4,9 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -40,7 +37,6 @@ public class Empresa {
 	@Column(name = "tx_fundador", nullable = false)
 	private String nomeFundador;
 	
-	@ManyToOne
-	@JoinColumn(name = "id_cidade",foreignKey = @ForeignKey(name = "fk_empresa_cidade"))
-	private Cidade cidade;
+	@Column(name = "cd_cidade", nullable = false)
+	private Long codigoCidade;
 }

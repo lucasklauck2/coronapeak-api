@@ -2,12 +2,9 @@ package br.com.coronapeak.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -33,9 +30,5 @@ public class Questionario {
 	private Boolean flagSuspeito;
 	
 	@Column(name="fl_doencarespiratoria", nullable = false)
-	private Boolean doencaRespiratoria;
-
-	@ManyToOne
-	@JoinColumn(name = "id_paciente", foreignKey = @ForeignKey(name = "fk_quest_paciente"))
-	private Paciente paciente;
+	private Boolean flagDoencaRespiratoria;
 }

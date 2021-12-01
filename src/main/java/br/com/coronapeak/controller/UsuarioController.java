@@ -34,4 +34,11 @@ public class UsuarioController {
 		
 		usuarioService.salvarDados(usuarioInformacao);
 	}
+	
+	@GetMapping("/adquirirTipoUsuario")
+	@CrossOrigin(origins = {"http://localhost:4200"})
+	public Long adquirirTipoUsuario(@RequestParam("token") String token) throws ParseException {
+		
+		return usuarioService.adquirirTipoUsuario(token);
+	}
 }

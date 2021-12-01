@@ -12,34 +12,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.coronapeak.dto.EmpresaDTO;
-import br.com.coronapeak.service.EmpresaService;
+import br.com.coronapeak.dto.InformacaoPacienteDTO;
+import br.com.coronapeak.service.PacienteService;
 
 @RestController
-@RequestMapping("/empresa")
-public class EmpresaController {
+@RequestMapping("/paciente")
+public class PacienteController {
 	
 	@Autowired
-	private EmpresaService empresaService;
+	private PacienteService pacienteService;
 	
 	@PostMapping("/salvar")
 	@CrossOrigin(origins = {"http://localhost:4200"})
-	public void cadastrarEmpresa(@RequestBody EmpresaDTO empresaDTO) {
+	public void cadastrarPaciente(@RequestBody InformacaoPacienteDTO informacaoPacienteDTO) {
 		
-		empresaService.cadastrarEmpresa(empresaDTO);
+		pacienteService.cadastrarPaciente(informacaoPacienteDTO);
 	}
 	
-	@GetMapping("/adquirirTodas")
+	@GetMapping("/adquirirTodos")
 	@CrossOrigin(origins = {"http://localhost:4200"})
-	public List<EmpresaDTO> adquirir() {
+	public List<InformacaoPacienteDTO> adquirir() {
 		
-		return empresaService.adquirir();
+		return pacienteService.adquirir();
 	}
 	
 	@DeleteMapping("/deletar")
 	@CrossOrigin(origins = {"http://localhost:4200"})
-	public void deletar(@RequestParam("codigoEmpresa") String codigoEmpresa) {
+	public void deletar(@RequestParam("codigoPaciente") String codigoPaciente) {
 		
-		empresaService.deletar(Long.valueOf(codigoEmpresa));
+		pacienteService.deletar(Long.valueOf(codigoPaciente));
 	}
+	
 }

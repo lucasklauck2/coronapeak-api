@@ -7,6 +7,7 @@ public class UsuarioInformacaoDTO {
 
 	private String nome;
 	private String email;
+	private Long codigoTipoUsuario;
 	private String novaSenha;
 	private String dataNascimento;
 	private String dataCadastro;

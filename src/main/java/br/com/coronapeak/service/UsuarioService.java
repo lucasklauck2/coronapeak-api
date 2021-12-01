@@ -47,6 +47,7 @@ public class UsuarioService {
 		UsuarioInformacaoDTO usuarioInformacaoDTO = new UsuarioInformacaoDTO();
 		usuarioInformacaoDTO.setEmail(usuario.getEmail());
 		usuarioInformacaoDTO.setNome(usuario.getNome());
+		usuarioInformacaoDTO.setCodigoTipoUsuario(usuario.getCodigoTipoUsuario());
 		usuarioInformacaoDTO.setDataCadastro(this.converterDataString(usuario.getDataCadastro()));
 		usuarioInformacaoDTO.setDataNascimento(this.converterDataString(usuario.getDataNascimento()));
 		
@@ -81,9 +82,27 @@ public class UsuarioService {
 		usuario.setNome(usuarioInformacaoDTO.getNome());
 		usuario.setEmail(usuarioInformacaoDTO.getEmail());
 		usuario.setSenha(usuarioInformacaoDTO.getNovaSenha());
+		usuario.setCodigoTipoUsuario(0L);
 		usuario.setDataNascimento(this.converterStringData(usuarioInformacaoDTO.getDataNascimento()));
 		
 		usuarioRepository.save(usuario);
+	}
+	
+	public Long adquirirTipoUsuario(String token){
+		
+		Optional<UsuarioToken> optUsuarioToken = usuarioTokenRepository.findFirstByToken(token);
+		
+		if(optUsuarioToken.isPresent()) {
+			
+			Optional<Usuario> optUsuario = usuarioRepository.findFirstByEmail(optUsuarioToken.get().getEmail());
+			
+			if(optUsuario.isPresent()) {
+				
+				return optUsuario.get().getCodigoTipoUsuario();
+			}
+		}
+		
+		return 0L;
 	}
 	
 	private void retornarErro(String mensagem) {
