@@ -43,6 +43,9 @@ public class Paciente {
 	@Column(name = "qtd_altura", nullable = false)
 	private Double altura;
 	
+	@Column(name = "cd_usuario", nullable = true)
+	private Long codigoUsuario;
+	
 	@ManyToOne
 	@JoinColumn(name = "id_cidade")
 	private Cidade cidade;

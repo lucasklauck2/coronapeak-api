@@ -43,4 +43,10 @@ public class PacienteController {
 		pacienteService.deletar(Long.valueOf(codigoPaciente));
 	}
 	
+	@GetMapping("/validarQuestionario")
+	@CrossOrigin(origins = {"http://localhost:4200"})
+	public Boolean validarQuestionario(@RequestParam("token") String token) {
+		
+		return pacienteService.validarQuestionario(token);
+	}
 }

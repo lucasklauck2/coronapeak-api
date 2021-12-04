@@ -11,4 +11,5 @@ public class RetornoLoginDTO {
 	
 	private String mensagem;
 	private String token;
+	private Long codigoUsuario;
 }

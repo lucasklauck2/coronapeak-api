@@ -2,9 +2,8 @@ package br.com.coronapeak.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +13,16 @@ import br.com.coronapeak.dto.InformacaoPacienteDTO;
 import br.com.coronapeak.model.Paciente;
 import br.com.coronapeak.model.PacienteSintoma;
 import br.com.coronapeak.model.Questionario;
+import br.com.coronapeak.model.Usuario;
+import br.com.coronapeak.model.UsuarioToken;
 import br.com.coronapeak.repository.CidadeRepository;
 import br.com.coronapeak.repository.EmpresaRepository;
 import br.com.coronapeak.repository.PacienteRepository;
 import br.com.coronapeak.repository.PacienteSintomaRepository;
 import br.com.coronapeak.repository.QuestionarioRepository;
 import br.com.coronapeak.repository.SintomaRepository;
+import br.com.coronapeak.repository.UsuarioRepository;
+import br.com.coronapeak.repository.UsuarioTokenRepository;
 
 @Service
 public class PacienteService {
@@ -41,10 +44,15 @@ public class PacienteService {
 
 	@Autowired
 	private PacienteSintomaRepository pacienteSintomaRepository;
+	
+	@Autowired
+	private UsuarioTokenRepository usuarioTokenRepository;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 
 	ModelMapper modelMapper = new ModelMapper();
 
-	@Transactional
 	public void cadastrarPaciente(InformacaoPacienteDTO informacaoPacienteDTO) {
 
 		Paciente paciente = new Paciente();
@@ -53,6 +61,7 @@ public class PacienteService {
 		paciente.setDataNascimento(informacaoPacienteDTO.getDataNascimento());
 		paciente.setPeso(informacaoPacienteDTO.getPeso());
 		paciente.setAltura(informacaoPacienteDTO.getAltura());
+		paciente.setCodigoUsuario(informacaoPacienteDTO.getCodigoUsuario());
 		paciente.setCidade(cidadeRepository.findById(informacaoPacienteDTO.getCodigoCidade()).orElse(null));
 		paciente.setEmpresa(empresaRepository.findById(informacaoPacienteDTO.getCodigoEmpresa()).orElse(null));
 
@@ -120,9 +129,38 @@ public class PacienteService {
 
 		return listaInformacaoPaciente;
 	}
+	
+	
 
 	public void deletar(Long codigoCidade) {
 
 		pacienteRepository.deleteById(codigoCidade);
+	}
+	
+	public Boolean validarQuestionario(String token){
+		
+		Optional<UsuarioToken> optUsuarioToken = usuarioTokenRepository.findFirstByToken(token);
+		
+		if(!optUsuarioToken.isPresent()) {
+			return Boolean.FALSE;
+		}
+		
+		UsuarioToken usuarioToken = optUsuarioToken.get();
+		
+		Optional<Usuario> optUsuario = usuarioRepository.findFirstByEmail(usuarioToken.getEmail());
+		
+		if(!optUsuario.isPresent()) {
+			return Boolean.FALSE;
+		}
+		
+		Usuario usuario = optUsuario.get();
+		
+		Optional<Paciente> optPaciente = pacienteRepository.findFirstByCodigoUsuario(usuario.getId());
+		
+		if(!optPaciente.isPresent()) {
+			return Boolean.FALSE;
+		}
+		
+		return Boolean.TRUE;
 	}
 }

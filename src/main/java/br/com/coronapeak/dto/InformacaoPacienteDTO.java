@@ -20,6 +20,7 @@ public class InformacaoPacienteDTO {
 	private Boolean flagPositivado;
 	private Boolean flagSuspeito;
 	private Boolean flagDoencaRespiratoria;
+	private Long codigoUsuario;
 	private List<PacienteSintomaDTO> listaPacienteSintomaDTO = new ArrayList<>();
 	private List<Long> listaSintoma = new ArrayList<>();
 }

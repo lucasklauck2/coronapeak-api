@@ -37,7 +37,7 @@ public class AutenticacaoService {
 		
 		this.gravarToken(loginDTO.getEmail(),token);
 		
-		return new RetornoLoginDTO("Logado com sucesso!", token);
+		return new RetornoLoginDTO("Logado com sucesso!", token, optUsuario.get().getId());
 	}
 	
 	public RetornoRegistroDTO registrar(RegistroDTO registroDTO) {
@@ -56,13 +56,13 @@ public class AutenticacaoService {
 		usuario.setDataNascimento(registroDTO.getDataNascimento());
 		usuario.setCodigoTipoUsuario(0L);
 		
-		usuarioRepository.save(usuario);
+		usuario = usuarioRepository.save(usuario);
 		
 		String token = this.gerarToken();
 		
 		this.gravarToken(registroDTO.getEmail(), token);
 		
-		return new RetornoRegistroDTO("Registrado com sucesso!", token);
+		return new RetornoRegistroDTO("Registrado com sucesso!", token, usuario.getId());
 	}
 	
 	private void retornarErro(String mensagem) {
